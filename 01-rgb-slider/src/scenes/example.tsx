@@ -3,13 +3,10 @@ import {all, createSignal, createRef, SimpleSignal} from '@motion-canvas/core';
 
 export default makeScene2D(function* (view) {
 
-  // Corners of the Rect objects are rounded and I set a columnar layout. 
-  // Next step is to create sub-layouts so I can have Rects next to each
-  // R/G/B label.
-
-  // I've discovered that I didn't truly need three individual signals and could just
-  // use `() => `${rect.()}` like I originally though. The issue was I didn't set it
-  // up as a lambda. Oh well, I actually like individual signals for each channel.
+  // Created some basic sub-layouts for each color channel. Each
+  // channel has a text label as well as it's numerical value. The
+  // numerical value is inside of it's own Rect which has a fill of
+  // the main Rect's color.
 
 
   const sig_red = createSignal(255);
@@ -19,7 +16,7 @@ export default makeScene2D(function* (view) {
   const txt = createRef<Txt>();
 
   const width = 800;
-  const rect_radius = 50;
+  const rect_radius = 15;
 
   function int_sig_to_hex(s: SimpleSignal<number, void>): string {
     // Example: 168 --> "a8"
@@ -36,21 +33,52 @@ export default makeScene2D(function* (view) {
         fill={() => `#${int_sig_to_hex(sig_red)}${int_sig_to_hex(sig_green)}${int_sig_to_hex(sig_blue)}`}
         radius={rect_radius}
       />
-      <Txt
-        ref={txt}
-        text={() => `R: ${Math.round(sig_red())}`}
-        y={250}
-      />
-      <Txt
-        ref={txt}
-        text={() => `G: ${Math.round(sig_green())}`}
-        y={250}
-      />
-      <Txt
-        ref={txt}
-        text={() => `B: ${Math.round(sig_blue())}`}
-        y={250}
-      />
+
+      {/* Red channel sub-layout */}
+      <Rect layout>
+        <Txt
+          text={"R:"}
+          y={250}
+        />
+        <Rect fill={() => rect().fill()} radius={rect_radius}> 
+          <Txt
+          ref={txt}
+          text={() => `${Math.round(sig_red())}`}
+          y={250}
+          />
+        </Rect>
+      </Rect>
+
+      {/* Green channel sub-layout */}
+      <Rect layout>
+        <Txt
+          text={"G:"}
+          y={250}
+        />
+        <Rect fill={() => rect().fill()} radius={rect_radius}> 
+          <Txt
+          ref={txt}
+          text={() => `${Math.round(sig_green())}`}
+          y={250}
+          />
+        </Rect>
+      </Rect>
+
+      {/* Blue channel sub-layout */}
+      <Rect layout>
+        <Txt
+          text={"B:"}
+          y={250}
+        />
+        <Rect fill={() => rect().fill()} radius={rect_radius}> 
+          <Txt
+          ref={txt}
+          text={() => `${Math.round(sig_blue())}`}
+          y={250}
+          />
+        </Rect>
+      </Rect>
+
     </Rect>
   )
 
