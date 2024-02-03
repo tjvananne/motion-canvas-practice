@@ -3,17 +3,16 @@ import {all, createSignal, createRef, SimpleSignal} from '@motion-canvas/core';
 
 export default makeScene2D(function* (view) {
 
-  // Created some basic sub-layouts for each color channel. Each
-  // channel has a text label as well as it's numerical value. The
-  // numerical value is inside of it's own Rect which has a fill of
-  // the main Rect's color.
+  // Each RGB channel's value now represents how much of it's bar (Rect)
+  // that is filled in with the main Rect's color, almost like a progress
+  // bar. I'm not sure if there's a better way to do this, but creating
+  // a dummy layout to wrap the progress bar seemed to work well.
 
 
   const sig_red = createSignal(255);
   const sig_green = createSignal(255);
   const sig_blue = createSignal(255);
   const rect = createRef<Rect>();
-  const txt = createRef<Txt>();
 
   const width = 800;
   const rect_radius = 15;
@@ -40,12 +39,13 @@ export default makeScene2D(function* (view) {
           text={"R:"}
           y={250}
         />
-        <Rect fill={() => rect().fill()} radius={rect_radius}> 
-          <Txt
-          ref={txt}
-          text={() => `${Math.round(sig_red())}`}
-          y={250}
-          />
+        <Rect layout fill={"#FFFFFF"} width={"80%"} radius={rect_radius}>
+          <Rect fill={() => rect().fill()} radius={rect_radius} width={() => `${sig_red()/255*100}%`}> 
+            <Txt
+            text={() => `${Math.round(sig_red())}`}
+            y={250}
+            />
+          </Rect>
         </Rect>
       </Rect>
 
@@ -55,12 +55,13 @@ export default makeScene2D(function* (view) {
           text={"G:"}
           y={250}
         />
-        <Rect fill={() => rect().fill()} radius={rect_radius}> 
-          <Txt
-          ref={txt}
-          text={() => `${Math.round(sig_green())}`}
-          y={250}
-          />
+        <Rect layout fill={"#FFFFFF"} width={"80%"} radius={rect_radius}>
+          <Rect fill={() => rect().fill()} radius={rect_radius} width={() => `${sig_green()/255*100}%`}> 
+            <Txt
+            text={() => `${Math.round(sig_green())}`}
+            y={250}
+            />
+          </Rect>
         </Rect>
       </Rect>
 
@@ -70,12 +71,13 @@ export default makeScene2D(function* (view) {
           text={"B:"}
           y={250}
         />
-        <Rect fill={() => rect().fill()} radius={rect_radius}> 
-          <Txt
-          ref={txt}
-          text={() => `${Math.round(sig_blue())}`}
-          y={250}
-          />
+        <Rect layout fill={"#FFFFFF"} width={"80%"} radius={rect_radius}>
+          <Rect fill={() => rect().fill()} radius={rect_radius} width={() => `${sig_blue()/255*100}%`}> 
+            <Txt
+            text={() => `${Math.round(sig_blue())}`}
+            y={250}
+            />
+          </Rect>
         </Rect>
       </Rect>
 
