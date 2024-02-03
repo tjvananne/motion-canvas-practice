@@ -3,15 +3,17 @@ import {waitFor, createSignal, Color, createRef} from '@motion-canvas/core';
 
 export default makeScene2D(function* (view) {
 
-  // This scene gives me a red square that slowly turns green and then back to red.
-  // I have a text box underneath it that shows the hex component of the Red channel,
-  // but it isn't updating as the color of the square animates.
-
+  // Idea #1 is the only one I'm able to make work. I now have a red square
+  // where the red channel slowly moves from 255 to 0. The text box below
+  // it reports out the hex code associated with the red channel. Both the
+  // fill of the rect and the content of the text box are connected to a
+  // primitive integer signal. The animation takes place on the signal
+  // directly, which then updates the Rect/Txt.
 
   // Idea #1: create a primitive int signal. Use the int in the text box but
   // conver to and from hex when passing the value into .fill().
 
-  // const sigred = createSignal(255);
+  const sigred = createSignal(255);
   // convert between int and hex; is this necessary for what I'm trying to do?
   // myHex = myInt.toString(16);
   // myInt = parseInt(myHex, 16);
@@ -34,15 +36,15 @@ export default makeScene2D(function* (view) {
         ref={rect}
         width={300}
         height={300}
-        fill="#FF0000"
+        fill={() => `#${Math.round(sigred()).toString(16).padStart(2, '0')}0000`}
       />
       <Txt
         ref={txt}
-        text={`red: ${rect().fill().toString().slice(1,3)}`} // Not updating during animation... so rect isn't a signal?
+        text={() => `red: ${Math.round(sigred()).toString(16).padStart(2, '0')}`}
         y={200}
       />
     </>
   )
 
-  yield* rect().fill("#35FF00", 2).to("#FF0000", 2);
+  yield* sigred(0, 4).to(255, 4);
 });
