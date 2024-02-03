@@ -3,11 +3,14 @@ import {all, createSignal, createRef, SimpleSignal} from '@motion-canvas/core';
 
 export default makeScene2D(function* (view) {
 
-  // At this point, I have three separate signals that each individually get converted
-  // into RGB hex code in the Rect.fill and Txt.text objects. I've created a function
-  // that calculates the hex code for each signal integer to simplify the logic in
-  // the Rect.fill attribute. Next step is giving more thought to the overall Layout.
-  // Might need to go learn FlexBox.
+  // Corners of the Rect objects are rounded and I set a columnar layout. 
+  // Next step is to create sub-layouts so I can have Rects next to each
+  // R/G/B label.
+
+  // I've discovered that I didn't truly need three individual signals and could just
+  // use `() => `${rect.()}` like I originally though. The issue was I didn't set it
+  // up as a lambda. Oh well, I actually like individual signals for each channel.
+
 
   const sig_red = createSignal(255);
   const sig_green = createSignal(255);
@@ -15,26 +18,40 @@ export default makeScene2D(function* (view) {
   const rect = createRef<Rect>();
   const txt = createRef<Txt>();
 
+  const width = 800;
+  const rect_radius = 50;
+
   function int_sig_to_hex(s: SimpleSignal<number, void>): string {
     // Example: 168 --> "a8"
     return Math.round(s()).toString(16).padStart(2, '0');
   }
 
   view.add(
-    <>
+    
+    <Rect layout height={800} width={width} fill={"#BBBBBB"} direction={"column"} radius={rect_radius}>
       <Rect
         ref={rect}
-        width={300}
+        width={width}
         height={300}
         fill={() => `#${int_sig_to_hex(sig_red)}${int_sig_to_hex(sig_green)}${int_sig_to_hex(sig_blue)}`}
+        radius={rect_radius}
       />
       <Txt
         ref={txt}
-        // TODO: should probably be individual Txt objects once I start creating their own <Rect>...
-        text={() => `red: ${Math.round(sig_red())}\ngreen: ${Math.round(sig_green())}\nblue: ${Math.round(sig_blue())}`}
+        text={() => `R: ${Math.round(sig_red())}`}
         y={250}
       />
-    </>
+      <Txt
+        ref={txt}
+        text={() => `G: ${Math.round(sig_green())}`}
+        y={250}
+      />
+      <Txt
+        ref={txt}
+        text={() => `B: ${Math.round(sig_blue())}`}
+        y={250}
+      />
+    </Rect>
   )
 
   yield* all(
