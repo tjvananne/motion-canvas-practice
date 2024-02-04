@@ -3,10 +3,9 @@ import {all, createSignal, createRef, SimpleSignal} from '@motion-canvas/core';
 
 export default makeScene2D(function* (view) {
 
-  // Each RGB channel's value now represents how much of it's bar (Rect)
-  // that is filled in with the main Rect's color, almost like a progress
-  // bar. I'm not sure if there's a better way to do this, but creating
-  // a dummy layout to wrap the progress bar seemed to work well.
+  // Wrestled with FlexBox to get the layout just right. If you set
+  // the flex direction to "column" and you want to use justifyContent,
+  // then you should also set an explicit height on that container.
 
 
   const sig_red = createSignal(255);
@@ -24,60 +23,63 @@ export default makeScene2D(function* (view) {
 
   view.add(
     
-    <Rect layout height={800} width={width} fill={"#BBBBBB"} direction={"column"} radius={rect_radius}>
+    <Rect layout height={800} width={width} fill={"#CCCCCC"} direction={"column"} radius={rect_radius}>
       <Rect
         ref={rect}
         width={width}
-        height={300}
+        height={"40%"}
         fill={() => `#${int_sig_to_hex(sig_red)}${int_sig_to_hex(sig_green)}${int_sig_to_hex(sig_blue)}`}
         radius={rect_radius}
       />
 
-      {/* Red channel sub-layout */}
-      <Rect layout>
+      <Rect layout direction={"column"} justifyContent={"space-evenly"} alignItems={"center"} height={"60%"}>
+
+        {/* Red channel sub-layout */}
+      <Rect layout width={"80%"}>
         <Txt
-          text={"R:"}
-          y={250}
+          text={"R :"}
+          padding={[20, 30, 20, 0]}
         />
-        <Rect layout fill={"#FFFFFF"} width={"80%"} radius={rect_radius}>
+        <Rect layout fill={"#FFFFFF"} width={"100%"} radius={rect_radius}>
           <Rect fill={() => rect().fill()} radius={rect_radius} width={() => `${sig_red()/255*100}%`}> 
             <Txt
             text={() => `${Math.round(sig_red())}`}
-            y={250}
+            padding={20}
             />
           </Rect>
         </Rect>
       </Rect>
 
       {/* Green channel sub-layout */}
-      <Rect layout>
+      <Rect layout width={"80%"}>
         <Txt
-          text={"G:"}
-          y={250}
+          text={"G :"}
+          padding={[20, 30, 20, 0]}
         />
-        <Rect layout fill={"#FFFFFF"} width={"80%"} radius={rect_radius}>
+        <Rect layout fill={"#FFFFFF"} width={"100%"} radius={rect_radius}>
           <Rect fill={() => rect().fill()} radius={rect_radius} width={() => `${sig_green()/255*100}%`}> 
             <Txt
             text={() => `${Math.round(sig_green())}`}
-            y={250}
+            padding={20}
             />
           </Rect>
         </Rect>
       </Rect>
 
       {/* Blue channel sub-layout */}
-      <Rect layout>
+      <Rect layout width={"80%"}>
         <Txt
-          text={"B:"}
-          y={250}
+          text={"B :"}
+          padding={[20, 30, 20, 0]}
         />
-        <Rect layout fill={"#FFFFFF"} width={"80%"} radius={rect_radius}>
+        <Rect layout fill={"#FFFFFF"} width={"100%"} radius={rect_radius}>
           <Rect fill={() => rect().fill()} radius={rect_radius} width={() => `${sig_blue()/255*100}%`}> 
             <Txt
             text={() => `${Math.round(sig_blue())}`}
-            y={250}
+            padding={20}
             />
           </Rect>
+        </Rect>
         </Rect>
       </Rect>
 
@@ -85,8 +87,8 @@ export default makeScene2D(function* (view) {
   )
 
   yield* all(
-    sig_red(0, 2).to(255, 2),
+    sig_red(0, 2).to(255, 3),
     sig_green(0, 3).to(255, 3),
-    sig_blue(0, 4).to(255, 4),
+    sig_blue(0, 4).to(255, 3),
   )
 });
