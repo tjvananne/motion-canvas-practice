@@ -35,51 +35,51 @@ export default makeScene2D(function* (view) {
       <Rect layout direction={"column"} justifyContent={"space-evenly"} alignItems={"center"} height={"60%"}>
 
         {/* Red channel sub-layout */}
-      <Rect layout width={"80%"}>
-        <Txt
-          text={"R :"}
-          padding={[20, 30, 20, 0]}
-        />
-        <Rect layout fill={"#FFFFFF"} width={"100%"} radius={rect_radius}>
-          <Rect fill={() => rect().fill()} radius={rect_radius} width={() => `${sig_red()/255*100}%`}> 
-            <Txt
-            text={() => `${Math.round(sig_red())}`}
-            padding={20}
-            />
+        <Rect layout width={"80%"}>
+          <Txt
+            text={"R :"}
+            padding={[20, 30, 20, 0]}
+          />
+          <Rect layout fill={"#FFFFFF"} width={"100%"} radius={rect_radius}>
+            <Rect fill={() => rect().fill()} radius={rect_radius} width={() => `${sig_red()/255*100}%`}> 
+              <Txt
+              text={() => `${Math.round(sig_red())}`}
+              padding={20}
+              />
+            </Rect>
           </Rect>
         </Rect>
-      </Rect>
 
-      {/* Green channel sub-layout */}
-      <Rect layout width={"80%"}>
-        <Txt
-          text={"G :"}
-          padding={[20, 30, 20, 0]}
-        />
-        <Rect layout fill={"#FFFFFF"} width={"100%"} radius={rect_radius}>
-          <Rect fill={() => rect().fill()} radius={rect_radius} width={() => `${sig_green()/255*100}%`}> 
-            <Txt
-            text={() => `${Math.round(sig_green())}`}
-            padding={20}
-            />
+        {/* Green channel sub-layout */}
+        <Rect layout width={"80%"}>
+          <Txt
+            text={"G :"}
+            padding={[20, 30, 20, 0]}
+          />
+          <Rect layout fill={"#FFFFFF"} width={"100%"} radius={rect_radius}>
+            <Rect fill={() => rect().fill()} radius={rect_radius} width={() => `${sig_green()/255*100}%`}> 
+              <Txt
+              text={() => `${Math.round(sig_green())}`}
+              padding={20}
+              />
+            </Rect>
           </Rect>
         </Rect>
-      </Rect>
 
-      {/* Blue channel sub-layout */}
-      <Rect layout width={"80%"}>
-        <Txt
-          text={"B :"}
-          padding={[20, 30, 20, 0]}
-        />
-        <Rect layout fill={"#FFFFFF"} width={"100%"} radius={rect_radius}>
-          <Rect fill={() => rect().fill()} radius={rect_radius} width={() => `${sig_blue()/255*100}%`}> 
-            <Txt
-            text={() => `${Math.round(sig_blue())}`}
-            padding={20}
-            />
+        {/* Blue channel sub-layout */}
+        <Rect layout width={"80%"}>
+          <Txt
+            text={"B :"}
+            padding={[20, 30, 20, 0]}
+          />
+          <Rect layout fill={"#FFFFFF"} width={"100%"} radius={rect_radius}>
+            <Rect fill={() => rect().fill()} radius={rect_radius} width={() => `${sig_blue()/255*100}%`}> 
+              <Txt
+              text={() => `${Math.round(sig_blue())}`}
+              padding={20}
+              />
+            </Rect>
           </Rect>
-        </Rect>
         </Rect>
       </Rect>
 
