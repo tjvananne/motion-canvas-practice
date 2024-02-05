@@ -5,3 +5,10 @@ I really love what aarthificial does [here in his YouTube DevLog video](https://
 
 I suspect this will involve Layouts and Signals, which I haven't experimented much with yet.
 
+## Result
+
+
+https://github.com/tjvananne/motion-canvas-practice/assets/7726537/544b3e82-60f4-41d1-beac-e9e21e776ed7
+
+I'm happy with how it turned out and learned quite a bit through this first mini-project.
+
