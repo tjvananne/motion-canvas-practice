@@ -1,19 +1,14 @@
 import {Rect, Txt, makeScene2D} from '@motion-canvas/2d';
-import {all, createSignal, createRef, SimpleSignal} from '@motion-canvas/core';
+import {all, waitFor, createSignal, createRef, SimpleSignal} from '@motion-canvas/core';
 
 export default makeScene2D(function* (view) {
-
-  // Wrestled with FlexBox to get the layout just right. If you set
-  // the flex direction to "column" and you want to use justifyContent,
-  // then you should also set an explicit height on that container.
-
 
   const sig_red = createSignal(255);
   const sig_green = createSignal(255);
   const sig_blue = createSignal(255);
   const rect = createRef<Rect>();
-
-  const width = 800;
+  const outer_rect = createRef<Rect>();
+  const width = 500;
   const rect_radius = 15;
 
   function int_sig_to_hex(s: SimpleSignal<number, void>): string {
@@ -23,10 +18,10 @@ export default makeScene2D(function* (view) {
 
   view.add(
     
-    <Rect layout height={800} width={width} fill={"#CCCCCC"} direction={"column"} radius={rect_radius}>
+    <Rect ref={outer_rect} layout height={800} width={width} fill={"#CCCCCC"} direction={"column"} radius={rect_radius}>
       <Rect
         ref={rect}
-        width={width}
+        width={"100%"}
         height={"40%"}
         fill={() => `#${int_sig_to_hex(sig_red)}${int_sig_to_hex(sig_green)}${int_sig_to_hex(sig_blue)}`}
         radius={rect_radius}
@@ -82,13 +77,21 @@ export default makeScene2D(function* (view) {
           </Rect>
         </Rect>
       </Rect>
-
     </Rect>
   )
 
   yield* all(
     sig_red(0, 2).to(255, 3),
     sig_green(0, 3).to(255, 3),
-    sig_blue(0, 4).to(255, 3),
+    sig_blue(0, 4).to(255, 2),
+  )
+  yield* waitFor(0.4);
+
+  yield* all(
+    outer_rect().height(600, 2).to(800, 2),
+    outer_rect().width(700, 2).to(width, 2),
+    sig_red(18, 2).to(255, 2),
+    sig_green(94, 2).to(255, 2),
+    sig_blue(14, 2).to(255, 2),
   )
 });
